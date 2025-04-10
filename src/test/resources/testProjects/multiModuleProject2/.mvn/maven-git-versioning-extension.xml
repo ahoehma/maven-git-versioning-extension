@@ -1,0 +1,49 @@
+<configuration xmlns="https://github.com/qoomon/maven-git-versioning-extension"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/qoomon/maven-git-versioning-extension https://qoomon.github.io/maven-git-versioning-extension/configuration-9.4.0.xsd">
+  <disable>true</disable>
+  <updatePom>false</updatePom>
+  <!-- https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
+  <!-- !!! project.build.outputTimestamp needs to be  ISO 8601 (yyyy-MM-dd'T'HH:mm:ssXXX) !!! -->
+  <refs>
+    <ref type="branch">
+      <pattern>develop</pattern>
+      <version>${version}</version>
+      <properties>
+        <project.build.outputTimestamp>${commit.timestamp.iso}</project.build.outputTimestamp>
+      </properties>
+    </ref>
+    <ref type="branch">
+      <pattern>master</pattern>
+      <version>${version.core}</version>
+      <properties>
+        <project.build.outputTimestamp>${commit.timestamp.iso}</project.build.outputTimestamp>
+      </properties>
+    </ref>
+    <ref type="branch">
+      <pattern>feature/(.+)</pattern>
+      <version>${version.core}-${ref.slug}-SNAPSHOT</version>
+      <properties>
+        <project.build.outputTimestamp>${commit.timestamp.iso}</project.build.outputTimestamp>
+      </properties>
+    </ref>
+    <ref type="branch">
+      <pattern>renovate/(.+)</pattern>
+      <version>${version.core}-${ref.slug}-SNAPSHOT</version>
+      <properties>
+        <project.build.outputTimestamp>${commit.timestamp.iso}</project.build.outputTimestamp>
+      </properties>
+    </ref>
+    <ref type="tag">
+      <pattern><![CDATA[v(?<version>.*)]]></pattern>
+      <version>${ref.version}</version>
+      <properties>
+        <project.build.outputTimestamp>${commit.timestamp.iso}</project.build.outputTimestamp>
+      </properties>
+    </ref>
+  </refs>
+  <!-- optional fallback configuration in case of no matching ref configuration-->
+  <rev>
+    <version>${commit}</version>
+  </rev>
+</configuration>
